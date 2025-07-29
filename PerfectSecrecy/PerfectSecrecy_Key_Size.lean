@@ -30,11 +30,12 @@ theorem K_GE_M (Enc : K → M → C) (Dec : K → C → M) (Gen : PMF K) :
     unfold Set.image
     rw [this]
     ext m
+    simp
     constructor <;>
-    · simp
-      intro k mfk
+    · intro hc
+      obtain ⟨k,hk⟩ := hc
       use k
-      rw [mfk]
+      rw [hk]
 
   have hk1: (@Fintype.elems K).toSet = (@Set.univ K)  := by
     ext k
@@ -73,11 +74,9 @@ theorem K_GE_M (Enc : K → M → C) (Dec : K → C → M) (Gen : PMF K) :
           exact Eq.symm (Set.ncard_coe_finset Fintype.elems)
         _= (@Set.univ.ncard M) := by
           congr
-          ext m
-          constructor
-          · simp
-          · simp
-            exact Fintype.complete m
+          ext m;
+          simp
+          exact Fintype.complete m
 
     rw [this] at S₀_lt_M
     linarith
