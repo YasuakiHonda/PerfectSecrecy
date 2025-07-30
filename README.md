@@ -28,3 +28,8 @@ Couple of messages will be displayed to show the progress of downloading necessa
 
 Once the download is finished, you can check the proof using lean4 extension support and InfoView.
 
+## Author and License
+As this is a mathematical proof, you can do whatever you want.
+The files are covered by MIT license for now, but if needed you can request a different licensing terms for your needs.
+
+Author: Yasuaki Honda, an Independent Developer in Japan
