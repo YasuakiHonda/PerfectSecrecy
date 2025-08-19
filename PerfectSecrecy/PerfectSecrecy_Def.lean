@@ -9,7 +9,7 @@ section PerfectSecrecyDefinition
 variable {M K C : Type}
 variable [Fintype M] [Inhabited M]
 variable [Fintype K] [Inhabited K]
-variable [Fintype C] [Inhabited C] [DecidableEq C]
+variable [Fintype C] [Inhabited C]
 
 noncomputable
 def correctness (Enc : K → M → C) (Dec : K → C → M) :=

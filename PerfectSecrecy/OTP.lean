@@ -61,12 +61,5 @@ theorem OTP_is_perfectly_secret :
     simp_rw [Bind.bind]
     unfold OTP_Gen OTP_Enc
 
-    simp_all [PMF.bind_apply]
-
-    have eq1 (m k:BitVec n):
-    (if c = k ^^^ m then ((Fintype.card (BitVec n)):ENNReal)⁻¹ else 0) =
-    (if k = c ^^^ m then ((Fintype.card (BitVec n)):ENNReal)⁻¹ else 0) := by
-      simp_rw [mkc_symm m k c]
-
-    simp_rw [eq1 m₁,eq1 m₂]
-    rw [tsum_ite_eq, tsum_ite_eq]
+    simp [PMF.bind_apply]
+    simp [mkc_symm]
