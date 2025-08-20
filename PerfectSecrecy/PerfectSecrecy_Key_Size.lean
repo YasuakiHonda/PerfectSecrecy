@@ -1,23 +1,10 @@
 import PerfectSecrecy.PerfectSecrecy_Def
 open PMF
+open Set
 
-
--- Type and set relations and cardinality
-lemma L3 {T : Type} [Fintype T] : @Fintype.elems.card T = Fintype.card T := by rfl
-
-lemma L4 {T : Type} [Fintype T] : Fintype.card T = @Set.univ.ncard T := by
-  calc
-    Fintype.card T = @Fintype.elems.card T := rfl
-    _= (@Fintype.elems T).toSet.ncard := by
-      exact Eq.symm (Set.ncard_coe_finset Fintype.elems)
-    _= (@Set.univ.ncard T) := by
-      congr
-      ext t;
-      simp
-      exact Fintype.complete t
 
 variable {M K C : Type}
-variable [Fintype M] [Inhabited M]
+variable [Fintype M] [Inhabited M] [DecidableEq M]
 variable [Fintype K] [Inhabited K]
 variable [Fintype C] [Inhabited C] [DecidableEq C]
 
@@ -36,53 +23,36 @@ theorem K_GE_M (Enc : K → M → C) (Dec : K → C → M) (Gen : PMF K) :
   have k₀:K := default
   let c₀:C := Enc k₀ m₀
   let f : K → M := fun k => Dec k c₀
-  let S₀ := {m:M | ∃k:K, m=Dec k c₀}
+  -- let S₀ := {m:M | ∃k:K, m=Dec k c₀}
+  let S₀ := Finset.image f Finset.univ
+  have hS₀: S₀ = Finset.image f Finset.univ := by rfl
 
-  have S₀_eq_image_f : S₀ = Set.image f (Set.univ) := by
-    have : S₀={m:M | ∃k:K, m=f k} := by
-      simp[f]
-      rfl
-    unfold Set.image
-    rw [this]
-    ext m
-    simp
-    constructor <;>
-    · intro hc
-      obtain ⟨k,hk⟩ := hc
-      use k
-      rw [hk]
 
-  have S₀_le_K: S₀.ncard ≤ @Fintype.elems.card K := by
-    rw [S₀_eq_image_f, L3, L4]
-    refine Set.ncard_image_le ?_
-    exact Set.finite_univ
+  have S₀_le_K: S₀.card ≤ @Fintype.elems.card K := by
+    exact Finset.card_image_le
 
-  rw [L3] at S₀_le_K
-  have S₀_lt_M : S₀.ncard < Fintype.card M := by linarith
+  have S₀_lt_M : S₀.card < Fintype.card M := by
+    exact Nat.lt_of_le_of_lt S₀_le_K K_M
 
-  have exists_m₁ : ∃m₁:M, ¬ m₁ ∈ S₀ := by
+  obtain ⟨m₁, hm₁⟩ : ∃m₁:M, ¬ m₁ ∈ S₀ := by
     by_contra hc
     push_neg at hc
-    have : S₀=Set.univ := by
-      ext x
-      constructor
-      · simp
-      · simp
-        exact hc x
+    have : S₀=Finset.univ := by
+      exact Finset.eq_univ_iff_forall.mpr hc
     simp_rw [this] at S₀_lt_M
-    rw [L4] at S₀_lt_M
-    linarith
-
-  obtain ⟨m₁, hm₁⟩ := exists_m₁
+    exact (lt_self_iff_false Finset.univ.card).mp S₀_lt_M
 
   have Enc_m1_ne_c₀ : ∀ k : K, Enc k m₁ ≠ c₀ := by
     intro k
     by_contra contra
     apply hm₁
-    use k
-    rw [←contra]
     have correct:= FullGen_CR_PS.2.1 k m₁
-    exact id (Eq.symm correct)
+    rw [contra] at correct
+    rw [hS₀, Finset.mem_image]
+    use k
+    constructor
+    · exact Finset.mem_univ k
+    · exact correct
 
   have Enc_m1_zero : (Enc_dist Enc Gen m₁) c₀ = 0 := by
     simp only [Enc_dist, Bind.bind, PMF.bind_apply, PMF.pure_apply]
