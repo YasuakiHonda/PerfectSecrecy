@@ -78,7 +78,6 @@ theorem K_GE_M (Enc : K → M → C) (Dec : K → C → M) (Gen : PMF K) :
       have : k₀∈ Gen.support := by
         apply FullGen_CR_PS.1
       exact (apply_pos_iff Gen k₀).mpr this
-
     apply lt_of_lt_of_le single_gt_zero
     simp_all
 
