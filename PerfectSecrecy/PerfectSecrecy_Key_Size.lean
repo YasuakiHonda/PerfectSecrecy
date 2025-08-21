@@ -22,11 +22,12 @@ theorem K_GE_M (Enc : K → M → C) (Dec : K → C → M) (Gen : PMF K) :
   have m₀:M := default
   have k₀:K := default
   let c₀:C := Enc k₀ m₀
+  have hc₀ : c₀=Enc k₀ m₀ := by rfl
+
   let f : K → M := fun k => Dec k c₀
+  have hf : ∀ k:K, f k = Dec k c₀ := by exact fun k ↦ rfl
   -- let S₀ := {m:M | ∃k:K, m=Dec k c₀}
   let S₀ := Finset.image f Finset.univ
-  have hS₀: S₀ = Finset.image f Finset.univ := by rfl
-
 
   have S₀_le_K: S₀.card ≤ @Fintype.elems.card K := by
     exact Finset.card_image_le
@@ -48,7 +49,7 @@ theorem K_GE_M (Enc : K → M → C) (Dec : K → C → M) (Gen : PMF K) :
     apply hm₁
     have correct:= FullGen_CR_PS.2.1 k m₁
     rw [contra] at correct
-    rw [hS₀, Finset.mem_image]
+    rw [Finset.mem_image]
     use k
     constructor
     · exact Finset.mem_univ k
@@ -81,7 +82,5 @@ theorem K_GE_M (Enc : K → M → C) (Dec : K → C → M) (Gen : PMF K) :
     apply lt_of_lt_of_le single_gt_zero
     simp_all
 
-  have ps := FullGen_CR_PS.2.2
-  unfold perfect_secrecy at ps
-  have ps₀ := ps m₀ m₁ c₀
+  have ps := FullGen_CR_PS.2.2 m₀ m₁ c₀
   simp_all
