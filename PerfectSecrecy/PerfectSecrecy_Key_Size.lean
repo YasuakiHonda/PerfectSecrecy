@@ -25,7 +25,6 @@ theorem K_GE_M (Enc : K → M → C) (Dec : K → C → M) (Gen : PMF K) :
   have hc₀ : c₀=Enc k₀ m₀ := by rfl
 
   let f : K → M := fun k => Dec k c₀
-  have hf : ∀ k:K, f k = Dec k c₀ := by exact fun k ↦ rfl
   -- let S₀ := {m:M | ∃k:K, m=Dec k c₀}
   let S₀ := Finset.image f Finset.univ
 
