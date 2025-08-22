@@ -1,5 +1,13 @@
 import PerfectSecrecy.PerfectSecrecy_Def
 
+/-
+The following Bitvec code is copied from cryptlib4:
+https://github.com/YasuakiHonda/cryptolib4
+
+The cryptolib4 above is a fork of Stone Olguin's cryptolib port to Lean 4,
+the original cryptolib developed by Joey Lupo for Lean 3.
+-/
+
 namespace Bitvec
 
 def bitVecEquivFin (n : ℕ) : BitVec n ≃ Fin (2^n) where
