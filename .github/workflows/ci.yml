@@ -9,18 +9,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    # Lean 4 + Lake をセットアップ
-    - name: Install Lean
-      run: |
-        curl https://raw.githubusercontent.com/leanprover/lean4/master/doc/lean4_setup.sh -sSf | sh
-        echo "$HOME/.elan/bin" >> $GITHUB_PATH
+      # Lean ツールチェーンをインストール (elan経由)
+      - name: Install elan (Lean toolchain manager)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
 
-    # mathlib4 キャッシュを取得
-    - name: Get mathlib cache
-      run: lake exe cache get
+      - name: Check versions
+        run: |
+          lean --version
+          lake --version
 
-    # ビルド
-    - name: Build project
-      run: lake build
+      - name: Get mathlib cache
+        run: lake exe cache get
+
+      - name: Build project
+        run: lake build
