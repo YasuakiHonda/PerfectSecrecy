@@ -23,10 +23,11 @@ Under the folder PerfectSecrecy, the following files are provided:
 ## How to use
 You can download the whole folder structure as a zip file by pressing Code button and choose "Download ZIP".
 Then you need to expand the zip to a folder.
-You open the folder using VSCode with lean4 proover extension and all the lean4 toolchain are installed.
-Couple of messages will be displayed to show the progress of downloading necessary mathlib4 files.
+Please invoke the following commands in the folder:
+  lake exe cache get
+  lake build
 
-Once the download is finished, you can check the proof using lean4 extension support and InfoView.
+After things are done, you can open the folder using VSCode to start !
 
 ## Author and License
 As this is a mathematical proof, you can do whatever you want.
