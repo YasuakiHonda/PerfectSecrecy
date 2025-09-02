@@ -22,12 +22,14 @@ Under the folder PerfectSecrecy, the following files are provided:
 
 ## How to use
 You can download the whole folder structure as a zip file by pressing Code button and choose "Download ZIP".
-Then you need to expand the zip to a folder.
-Please invoke the following commands in the folder:  
+Then you need to expand the zip to a folder. As the successful CI workflow creates the latest cache, you can invoke the following commands in the folder
+to fetch them.  
   % lake exe cache get  
   % lake build  
 
 After things are done, you can open the folder using VSCode to start !
+
+[![CI](https://github.com/YasuakiHonda/PerfectSecrecy/actions/workflows/ci.yml/badge.svg)](https://github.com/YasuakiHonda/PerfectSecrecy/actions/workflows/ci.yml)
 
 ## Author and License
 As this is a mathematical proof, you can do whatever you want.
