@@ -23,9 +23,9 @@ Under the folder PerfectSecrecy, the following files are provided:
 ## How to use
 You can download the whole folder structure as a zip file by pressing Code button and choose "Download ZIP".
 Then you need to expand the zip to a folder.
-Please invoke the following commands in the folder:
-  lake exe cache get
-  lake build
+Please invoke the following commands in the folder:  
+  % lake exe cache get  
+  % lake build  
 
 After things are done, you can open the folder using VSCode to start !
 
