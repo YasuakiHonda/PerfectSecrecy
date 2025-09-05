@@ -2,7 +2,10 @@ name: CI
 
 on:
   push:
+    branches: ["main"] # replace "main" with the default branch
   pull_request:
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -10,20 +13,5 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      # Lean ツールチェーンをインストール (elan経由)
-      - name: Install elan (Lean toolchain manager)
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y
-          echo "$HOME/.elan/bin" >> $GITHUB_PATH
-
-      - name: Check versions
-        run: |
-          lean --version
-          lake --version
-
-      - name: Get mathlib cache
-        run: lake exe cache get
-
-      - name: Build project
-        run: lake build
+      # uses lean standard action with all default input values
+      - uses: leanprover/lean-action@v1
