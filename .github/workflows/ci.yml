@@ -2,25 +2,16 @@ name: CI
 
 on:
   push:
+    branches: ["main"] # replace "main" with the default branch
   pull_request:
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-
-    # Lean 4 + Lake をセットアップ
-    - name: Install Lean
-      run: |
-        curl https://raw.githubusercontent.com/leanprover/lean4/master/doc/lean4_setup.sh -sSf | sh
-        echo "$HOME/.elan/bin" >> $GITHUB_PATH
-
-    # mathlib4 キャッシュを取得
-    - name: Get mathlib cache
-      run: lake exe cache get
-
-    # ビルド
-    - name: Build project
-      run: lake build
+      - uses: actions/checkout@v4
+      # uses lean standard action with all default input values
+      - uses: leanprover/lean-action@v1
